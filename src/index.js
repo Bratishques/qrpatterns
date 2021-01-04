@@ -1,5 +1,6 @@
 import { processInput, fetchData } from "./getData.js";
 import QRAdapter from "./qr-adapter.js";
+import jsQR from "jsqr"
 
 //An adapter implementation for QR reader
 const codeReader = new QRAdapter(jsQR);

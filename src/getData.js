@@ -1,7 +1,7 @@
 import {
   WEIGHT_UNIT_OPTIONS,
   PROCESSING_METHOD_OPTIONS,
-} from "./test/util/enums.js";
+} from "../test/util/enums.js";
 
 
 export class coffeeData{
