@@ -1,0 +1,14 @@
+{
+  "name": "qrcodereader",
+  "version": "1.0.0",
+  "description": "This is a QR code reader implemented with design patterns that I'm currently studying",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Victor Nikulin <nv60190@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "jsqr": "^1.3.1"
+  }
+}
