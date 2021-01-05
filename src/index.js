@@ -1,46 +1,37 @@
 import { processInput, fetchData } from "./getData.js";
-import QRAdapter from "./qr-adapter.js";
+import QRAdapter from "./qrAdapter.js";
 import jsQR from "jsqr"
+import {defaultStyling, defaultWidth} from "./styling.js"
+defaultStyling()
 
 //An adapter implementation for QR reader
 const codeReader = new QRAdapter(jsQR);
+const getCodeFromData = (imageData) => {
+  return codeReader.getCode(imageData.data, imageData.width, imageData.height)
+}
 
 const coffeeData = fetchData
 
-const defaultWidth = () => {
-  if (window.innerWidth < 600) {
-    return window.innerWidth;
-  } else {
-    return 600;
-  }
-};
-const currentWidth = defaultWidth();
+
 
 const container = document.getElementById("container");
-container.style.width = currentWidth;
-container.style.display = "flex";
-container.style.justifyContent = "center";
-container.style.alignItems = "center";
-container.style.flexDirection = "column";
-
 const video = document.querySelector("video");
-video.width = currentWidth;
-
 const canvas = document.querySelector("canvas");
-canvas.width = currentWidth;
-canvas.height = video.getBoundingClientRect().height;
-
 const ctx = canvas.getContext("2d");
 
 async function getMedia(constraints) {
   let stream = null;
   try {
+    const supports = navigator.mediaDevices.getSupportedConstraints()
+    console.log(supports)
     stream = await navigator.mediaDevices.getUserMedia(constraints);
     video.srcObject = stream;
-  } catch (err) {}
+  } catch (err) {
+
+  }
 }
 
-const startCapture = () => {
+const startCapture = (options) => {
   window.addEventListener("resize", () => {
     const currentWidth = defaultWidth();
     container.width = currentWidth;
@@ -57,19 +48,15 @@ const startCapture = () => {
       window.requestAnimationFrame(initializeCanvas);
     }, 100);
   });
-  getMedia({ video: true });
+  getMedia(options);
 };
 
-startCapture();
+startCapture({ video: true, audio: false });
 
 const initializeCanvas = async () => {
   ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
   const myImageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-  const code = codeReader.getCode(
-    myImageData.data,
-    myImageData.width,
-    myImageData.height
-  );
+  const code = getCodeFromData(myImageData)
   if (code?.data) {
     processCode(code);
     return;

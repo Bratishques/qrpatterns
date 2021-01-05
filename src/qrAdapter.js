@@ -1,6 +1,7 @@
 class QRAdapter {
-    constructor (func) {
+    constructor (func, ...rest) {
         this.func = func
+        this.args = rest
     }
     getCode() {
       const args = arguments
